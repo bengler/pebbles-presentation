@@ -1,0 +1,26 @@
+{
+  "name": "koan",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pebblestack/koan.git"
+  },
+  "dependencies": {
+    "tiramisu": "latest",
+    "jquery": "git://github.com/bjoerge/jquery-node.git",
+    "pebbles": "latest",
+    "json3": "latest",
+    "es5-shim": "latest",
+    "poll": "latest",
+    "repeat": "latest",
+    "backbone": "latest",
+    "showdown": "latest",
+    "jade-runtime": "git://github.com/bjoerge/jade-runtime"
+  },
+  "license": "MIT",
+  "description": ""
+}

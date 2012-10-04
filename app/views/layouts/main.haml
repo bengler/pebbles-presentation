@@ -1,0 +1,29 @@
+!!! 5
+%html(lang='no')
+  %head
+    %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+
+    %link(rel="shortcut icon" href="/favicon.ico")
+
+    %link(href="#{stylesheet_path("custom")}" rel="stylesheet" type="text/css")
+
+    <meta name="viewport" content="width=1274, user-scalable=no">
+    <link rel="stylesheet" href="themes/ribbon/styles/style.css">
+    <link rel="stylesheet" href="themes/ribbon/styles/print.css" media="print">
+
+
+    /[if IE]
+      <script src="/js/compat.js"></script>
+
+    <script src="/js/shower.js" async></script>
+    <script src="/js/custom.js" async></script>
+
+    %title Presentation
+
+  %body.list
+    %header.caption
+      %h1 Pebbles Presentation
+      %p Simen Svale Skogsrud, Bengler
+    = yield
+    .progress
+      %div

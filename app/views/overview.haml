@@ -1,0 +1,31 @@
+.slide.cover.w#Cover
+  %div
+    %section
+      %header
+        %h2 Hei hallo og vekommen
+      %img(src="/pictures/stones.jpeg")
+.slide#Second
+  %div
+    %section
+      %header
+        %h2 Hei hallo og vekommen
+      %p This <code>&lt;tool&gt;</code> is provided <strong>without</strong> warranty, guarantee, or much in the way of explanation. Note that use of this tool may or may not crash <em>your</em> browser.
+      %p <a href="examples/index.htm" target="_blank">This link will be opened in the new tab</a></p>
+.slide#Third
+  %div
+    %section
+      %header
+        %h2 Hei hallo og vekommen
+      :code
+        document.addEventListener('touchmove', function (e) {
+          if (!isListMode()) {
+            <mark class="important">e.preventDefault();</mark>
+          }
+        }, false);
+.slide#Fourth
+  %div
+    %section
+      %header
+        %h2 Hallo
+      %blockquote
+        %p This tool is provided without warranty, guarantee, or much in the way of explanation. Note that use of this tool may or may not crash your browser, lock up your machine, erase your hard drive.

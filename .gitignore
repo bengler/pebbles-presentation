@@ -1,0 +1,12 @@
+.bundle
+/tmp
+/log
+.DS_Store
+.rvmrc
+*~
+coverage/
+.idea
+selftest
+.sass-cache
+node_modules
+config/site.rb
