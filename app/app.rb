@@ -4,12 +4,20 @@ require 'json'
 require "snowball/sinatra"
 require 'pebblebed/sinatra'
 
+# A filter to put code in a slide
+# :code in haml
+# Use double brackets to mark sections as important:
+#   this.is.[[importantCode]].youKonw
 module Haml::Filters::Code
   include Haml::Filters::Base
 
   def render(text)
     result = "<pre>"
     text.split("\n").each do |line|
+      line = CGI.escapeHTML(line)
+      line.gsub!(/\[\[.*?\]\]/) do |fragment|
+        "<mark class='important'>#{fragment[2..-3]}</mark>"
+      end
       result << "<code>#{line}</code>"
     end
     result << "</pre>"
