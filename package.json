@@ -15,7 +15,7 @@
     "pebbles": "latest",
     "json3": "latest",
     "es5-shim": "latest",
-    "poll": "latest",
+    "sprig": "latest",
     "repeat": "latest",
     "backbone": "latest",
     "showdown": "latest",
