@@ -1,6 +1,9 @@
 - content_for :javascript do
   <script src="/js/overview.js" async></script>
 
+- content_for :css do
+  %link(href="/twitter-bootstrap.css" rel="stylesheet" type="text/css")
+
 %header.caption
   %h1 Overview of Pebbles
   %p Simen Svale Skogsrud, Bengler

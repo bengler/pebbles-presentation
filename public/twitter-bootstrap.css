@@ -5411,7 +5411,7 @@ a.badge:hover {
   }
 }
 
-.progress {
+.x-progress {
   height: 20px;
   margin-bottom: 20px;
   overflow: hidden;

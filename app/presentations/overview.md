@@ -1,7 +1,7 @@
 # Pebbles Overview
 
 # Pebbles
-Pebbles is a discipline and a toolset for building applications by composing distributed, reusable services.
+Pebbles is a discipline and a toolset for building social applications by composing distributed, reusable services.
 
 # A Selection of Reusable Social Features
 - Identity and Authentication
@@ -16,11 +16,6 @@ Pebbles is a discipline and a toolset for building applications by composing dis
 
 # Perfection: The Classic DB-driven Web-app
 ![Perfection!](/pictures/overview/clientserver.jpg)
-
-# Monolithic Web Apps: Simplicity incarnated
-- A single piece of code to maintain
-- Easy deployment
-- Single, identifiable point of failure
 
 # But it gets hairy when you have to …
 - share authentication across apps
@@ -50,13 +45,14 @@ You solve this by adding api-actions willy nilly …
 
 > <cite>Wikipedia</cite>
 
+# SOA is more than having lots of APIs
+
+Interoperability demands som well thought out conventions.
+
 # Our Goals with Pebbles
 
 # Goals: Auth roaming
-We must be able to share user profiles across applications, and provide a login that travels across hosts.
-
-- Shared user database
-- Traveling cookies
+**We must be able to share user profiles across applications, and provide a login that travels across hosts.**
 
 # Goals: Data sharing
 **Data are presented and manipulated in the locations most convenient and valuable to our users.**
@@ -64,7 +60,7 @@ We must be able to share user profiles across applications, and provide a login 
 Storing the data in the app where it was created is like using an operating system without a file system.
 
 # Goals: Deploy once, reuse everywhere
-**A lot of data has similar sematics across services.**
+**A lot of data has similar sematics across applications. Build once!**
 
 Media uploads | Likes, kudos, votes | Objectionable content reports | Comments | Post-like records | User accounts, authentication, access-privileges | Organizational structure, roles
 
@@ -76,7 +72,8 @@ Technology evolves. You are going to want to move to newer and better things. Fo
 # Approach
 
 # Interoperability: a few, simple standards
-- Authorization and identification of user sessions
+- Authorization and identification of user sessions (Checkpoint)
+- A model for access privileges (PSM)
 - Identifiers of individual objects (Uids)
 - Broadcast events (The River)
 - RESTful http, json, AMQP, CORS
@@ -91,31 +88,25 @@ The API is the ONLY way anything is allowed to modify the data of the service. N
 The website is just another client.
 
 # Full API coverage
-The "API only"-approach guarantees an API coverage of 100%
+*API-coverage*: The fraction of actions that an application performs on a set of data that is exposed through a public api.
 
-(*API-coverage*: The fraction of actions that an application performs on a set of data that is exposed through a public api.)
-
-# Loose Coupling: The River
-Pebbles may broadcast events to a global queue called The River. Others listen in and update their state in their own time.
-
-- A blog post in ∴ _Grove_ gets broadcast and is picked up by ∴ _Sherlock_ and indexed for full text search.
-- An access privilege is added to ∴ _Checkpoint_ and is broadcast. ∴ _Grove_, ∴&nbsp;_Sherlock_ and ∴ _Origami_ updates their table accordingly.
+**The "API only"-approach guarantees an API coverage of 100%**
 
 # Some examples
-
-# Checking identity
-```js
-services.checkpoint.get('/identities/me').then(function(result){
-  console.log(JSON.stringify(result));
-});
-```
 
 # Logging in:
 
 ```html
 <a href="#" onclick="services.checkpoint.login('twitter')">Log in</a>
 ```
-<a href="" class="button" onclick="services.checkpoint.login('twitter'); return false">Log in</a>
+<button class="btn btn-info" onclick="services.checkpoint.login('twitter'); return false">Log in</a>
+
+# Checking identity
+```js
+services.checkpoint.get('/identities/me').then(function(user){
+  alert(user.profile.name);
+});
+```
 
 # Identity record
 ```js
@@ -141,16 +132,7 @@ services.checkpoint.get("/identities/me").then(function(user) {
 ```
 <p></p>
 &lt;span id=&quot;profile&quot;&gt;<span id="profile"></span>&lt;/span&gt;
-<br/><a class="button" onclick="__getProfile(); return(false);">Run</a>
-
-
-# Post to blog
-
-`services.grove.post("post.blog:amedia.ba.blogs.sport", :post => {…})`
-
-Full text search:
-
-`services.sherlock.get("post.blog:amedia.ba.blogs.*", :q => "searchterm")`
+<br/><button class="btn btn-info" onclick="__getProfile(); return(false);">Run</a>
 
 # The Pebbles So far
 
@@ -229,20 +211,12 @@ Knows "everything" about our partnering local papers
 
 # Status
 
-# The major pebbles are FOSS
-
-Work in progress: Publish all pebbles, libraries and tools.
-
-http://pebblestack.org
-
-http://github.com/bengler
-
 # Production ready?
 Yes.
 
 We are running most of our pebbles in a production environment. Ops-wise they are our most "boring" applications.
 
-They lack a sophisticated access control scheme. **On it!**
+_They lack a sophisticated access control scheme. **On it!**_
 
 # Pick up and go? Yes and No
 
@@ -252,9 +226,16 @@ Getting the backend up and running: You'll need a little hand holding. **Will be
 
 # What we are focusing on these days
 - Security and access control [(PSM)](https://github.com/bengler/checkpoint/wiki/Pebbles-Security-Model)
-- Completing Origami
+- Cleaning up dev-tools
 - Configuration and inspection apps (XRay)
-- Cleaning up ruby- and js-libraries
+
+# Pebbles are FOSS
+
+Liberal do-anything license!
+
+http://pebblestack.org
+
+http://github.com/bengler
 
 # Getting into it?
 
@@ -262,9 +243,3 @@ Getting the backend up and running: You'll need a little hand holding. **Will be
 - Then invite yourselves over for lunch!
 
 # Over til Bjørge
-
-
-
-# NOTES
-- Kjøre litt kode i browseren
-- The River og asynkronitet
