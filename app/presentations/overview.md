@@ -1,7 +1,7 @@
 # Pebbles Overview
 
 # Pebbles
-Pebbles is a discipline and a toolset for building applications by composing reusable, distributed RESTful services.
+Pebbles is a discipline and a toolset for building applications by composing distributed, reusable services.
 
 # A Selection of Reusable Social Features
 - Identity and Authentication
@@ -10,7 +10,7 @@ Pebbles is a discipline and a toolset for building applications by composing reu
 - Modelling of Organizations and Roles
 - Media Uploads
 - Likes/Kudos/Votes
-- … 
+- …
 
 # Motivation
 
@@ -33,7 +33,7 @@ You solve this by adding api-actions willy nilly …
 # ![Hellish mess of interconnected apis](/pictures/overview/apihell.jpg)
 
 # Problems ensue
-- Teams are constantly waiting for other teams to add or revise api-endpoints
+- Teams are constantly waiting for other teams to fix apis
 - Api-actions will be task-specific and hard to reuse
 - Documentation will suck
 - Hacks pile upon hacks
@@ -59,19 +59,19 @@ We must be able to share user profiles across applications, and provide a login 
 - Traveling cookies
 
 # Goals: Data sharing
-Data arrive, get processed and is delivered in the locations most convenient and valuable to our users.
+**Data arrive, get processed and is delivered in the locations most convenient and valuable to our users.**
 
 Storing the data in the app where it was created is like using an operating system without a file system.
 
 # Goals: Deploy once, reuse everywhere
-A lot of data has similar sematics across services
+**A lot of data has similar sematics across services.**
 
 Media uploads | Likes, kudos, votes | Objectionable content reports | Comments | Post-like records | User accounts, authentication, access-privileges | Organizational structure, roles
 
 # Goals: Piecemeal upgrades
 **Small, loosely coupled parts that can be refactored or upgraded individually where it makes most sense.**
 
-Technology evolves. You are going to want to move to newer and better things. If your thing is huge and coupled enough, it will never make business sense to do so until catastrophy is imminent.
+Technology evolves. You are going to want to move to newer and better things. For huge things, it will never make business sense until catastrophy is imminent.
 
 # Approach
 
@@ -88,56 +88,69 @@ Technology evolves. You are going to want to move to newer and better things. If
 # Encapsulation: The public API is the only interface
 The API is the ONLY way anything is allowed to modify the data of the service. NO BACKDOORS.
 
-Not an api to a web app, but a set of apis that power a web app.
+The website is just another client.
 
-# API First
-The "API first"-approach guarantees an API coverage of 100%
+# Full API coverage
+The "API only"-approach guarantees an API coverage of 100%
 
 (*API-coverage*: The fraction of actions that an application performs on a set of data that is exposed through a public api.)
 
-
-# The River
-Pebbles may broadcast events to a global queue called The River. Other pebbles listens to this queue and updates their state. Examples:
+# Loose Coupling: The River
+Pebbles may broadcast events to a global queue called The River. Others listen in and update their state in their own time.
 
 - A blog post in ∴ _Grove_ gets broadcast and is picked up by ∴ _Sherlock_ and indexed for full text search.
 - An access privilege is added to ∴ _Checkpoint_ and is broadcast. ∴ _Grove_, ∴&nbsp;_Sherlock_ and ∴ _Origami_ updates their table accordingly.
 
 # Some examples
 
-# Logging in
-- Direct user to `/api/checkpoint/v1/login/twitter`
-- Checkpoint negotiates authentication
-- Cookie: `checkpoint.session == 'hg8w1xxm1ij4zifhqtj7kfl3pjvthf94z5m…'`
-- User will now be authenticated with all pebbles
-
 # Checking identity
-- `pebbles.checkpoint.get("/identities/me")`
+```js
+services.checkpoint.get('/identities/me').then(function(result){
+  console.log(JSON.stringify(result));
+});
+```
+
+# Logging in:
+
+```html
+<a href="#" onclick="services.checkpoint.login('twitter')">Log in</a>
+```
+<a href="" class="button" onclick="services.checkpoint.login('twitter'); return false">Log in</a>
 
 # Identity record
-    {
-      "identity": {
-        "id": 160408,
-        "provisional": false,
-        "realm": "apdm"
-      },
-      "accounts": ["twitter"],
-      "profile": {
-        "description": "Gartner på Underskog og idémann hos Bengler",
-        "image_url": "http://a0.twimg.com/profile_images ...",
-        "name": "Simen Svale Skogsrud",
-        "nickname": "svale",
-        "profile_url": "http://twitter.com/svale",
-        "provider": "twitter"
-      }
-    }
+```js
+{
+  "identity": { "id": 160408, "provisional": false, "realm": "apdm" },
+  "accounts": ["twitter"],
+  "profile": {
+    "description": "Gartner på Underskog og idémann hos Bengler",
+    "image_url": "http://a0.twimg.com/profile_images ...",
+    "name": "Simen Svale Skogsrud",
+    "nickname": "svale",
+    "profile_url": "http://twitter.com/svale",
+    "provider": "twitter"
+  }
+}
+```
+
+# Displaying profile
+```js
+services.checkpoint.get("/identities/me").then(function(user) {
+	$('#profile').html("<img src='"+user.profile.image_url+"'/> "+user.profile.name)
+});
+```
+<p></p>
+&lt;span id=&quot;profile&quot;&gt;<span id="profile"></span>&lt;/span&gt;
+<br/><a class="button" onclick="__getProfile(); return(false);">Run</a>
+
 
 # Post to blog
 
-`pebbles.grove.post("post.blog:amedia.ba.blogs.sport", :post => {…})`
+`services.grove.post("post.blog:amedia.ba.blogs.sport", :post => {…})`
 
 Full text search:
 
-`pebbles.sherlock.get("post.blog:amedia.ba.blogs.*", :q => "…")`
+`services.sherlock.get("post.blog:amedia.ba.blogs.*", :q => "searchterm")`
 
 # The Pebbles So far
 
@@ -229,13 +242,18 @@ Yes.
 
 We are running most of our pebbles in a production environment. Ops-wise they are our most "boring" applications.
 
-They lack a sophisticated access control scheme. _On it!_
+They lack a sophisticated access control scheme. **On it!**
 
 # Pick up and go? Yes and No
 
 Client side with CORS: Very easy.
 
-Getting the backend up and running: You'll need a little hand holding. Will be a one-liner soon.
+Getting the backend up and running: You'll need a little hand holding. **Will be a one-liner soon.**
+
+# Getting into it?
+
+- Start with the _readme_'s on github. 
+- Then invite yourselves over for lunch!
 
 # Over til Bjørge
 
