@@ -17,8 +17,7 @@ gem 'compass', '0.12.alpha.0'
 gem 'compass_twitter_bootstrap', :git => 'git://github.com/vwall/compass-twitter-bootstrap.git', :tag => "v2.0.1.1"
 
 gem 'redcarpet'
-gem 'albino'
-gem 'pygmentize'
+gem 'pygments.rb'
 
 gem 'snowball', :git => 'git@github.com:bengler/snowball.git'
 

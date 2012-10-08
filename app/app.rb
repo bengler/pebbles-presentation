@@ -7,15 +7,15 @@ require "snowball/sinatra"
 require 'pebblebed/sinatra'
 require 'digest/md5'
 require 'sinatra/content_for'
-require 'albino'
+require 'pygments'
 
 # A filter to put code in a slide
 # :code in haml
 # Use double brackets to mark sections as important:
 #   this.is.[[importantCode]].youKonw
-class HTMLWithAlbino < Redcarpet::Render::HTML
+class HTMLWithPygments < Redcarpet::Render::HTML
   def block_code(code, language)
-    Albino.colorize(code, language || 'text')
+    Pygments.highlight(code, lexer: language || 'text', options: {encoding: 'utf-8'})
   end
 end
 
@@ -27,7 +27,7 @@ class App < Sinatra::Base
 
   set :haml, :layout => :'layouts/main'
 
-  set :markdown, Redcarpet::Markdown.new(HTMLWithAlbino,
+  set :markdown, Redcarpet::Markdown.new(HTMLWithPygments,
        :fenced_code_blocks => true,
         :autolink => true, :space_after_headers => true)
 
