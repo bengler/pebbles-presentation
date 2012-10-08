@@ -16,6 +16,7 @@ BODY {
 ---------------------------------------- */
 .slide:after {
 	counter-increment:paging;
+	opacity: 0.4;
 	content:counter(paging, decimal-leading-zero);
 	}
 .slide section {
@@ -133,6 +134,8 @@ BODY {
 	margin:0 0 45px;
 	counter-reset:code;
 	white-space:normal;
+	font-size: 10pt;
+	padding-left: 40px;
 	}
 	.slide pre code {
 		display:block;
