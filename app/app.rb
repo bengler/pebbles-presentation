@@ -6,24 +6,16 @@ require 'json'
 require "snowball/sinatra"
 require 'pebblebed/sinatra'
 require 'digest/md5'
+require 'sinatra/content_for'
+require 'albino'
 
 # A filter to put code in a slide
 # :code in haml
 # Use double brackets to mark sections as important:
 #   this.is.[[importantCode]].youKonw
-module Haml::Filters::Code
-  include Haml::Filters::Base
-  def render(text)
-    result = "<pre>"
-    text.split("\n").each do |line|
-      line = CGI.escapeHTML(line)
-      line.gsub!(/\[\[.*?\]\]/) do |fragment|
-        "<mark class='important'>#{fragment[2..-3]}</mark>"
-      end
-      result << "<code>#{line}</code>"
-    end
-    result << "</pre>"
-    result
+class HTMLWithAlbino < Redcarpet::Render::HTML
+  def block_code(code, language)
+    Albino.colorize(code, language || 'text')
   end
 end
 
@@ -35,12 +27,15 @@ class App < Sinatra::Base
 
   set :haml, :layout => :'layouts/main'
 
-  set :markdown, Redcarpet::Markdown.new(Redcarpet::Render::HTML,
+  set :markdown, Redcarpet::Markdown.new(HTMLWithAlbino,
+       :fenced_code_blocks => true,
         :autolink => true, :space_after_headers => true)
 
   register Sinatra::Pebblebed
 
   helpers Sprockets::Helpers
+
+  helpers Sinatra::ContentFor
 
   register Sinatra::Snowball
   snowball do
@@ -53,40 +48,12 @@ class App < Sinatra::Base
   end
 
   helpers do
-    # Github Flavored Markdown
-    def gfm(text)
-
-      # Extract pre blocks
-      extractions = {}
-      text.gsub!(%r{<pre>.*?</pre>}m) do |match|
-        md5 = Digest::MD5.hexdigest(match)
-        extractions[md5] = match
-        "{gfm-extraction-#{md5}}"
-      end
-
-      # prevent foo_bar_baz from ending up with an italic word in the middle
-      text.gsub!(/(^(?! {4}|\t)\w+_\w+_\w[\w_]*)/) do |x|
-        x.gsub('_', '\_') if x.split('').sort.to_s[0..1] == '__'
-      end
-
-      # in very clear cases, let newlines become <br /> tags
-      text.gsub!(/(\A|^$\n)(^\w[^\n]*\n)(^\w[^\n]*$)+/m) do |x|
-        x.gsub(/^(.+)$/, "\\1  ")
-      end
-
-      # Insert pre block extractions
-      text.gsub!(/\{gfm-extraction-([0-9a-f]{32})\}/) do
-        extractions[$1]
-      end
-
-      text
-    end
 
     def markdown(source, options = {})
       result = nil
       result = $memcached.get(options[:cache_key]) if options[:cache_key]
       unless result
-        result = settings.markdown.render(gfm(source))
+        result = settings.markdown.render(source)
 
         $memcached.set(options[:cache_key], result) if options[:cache_key]
       end
@@ -148,7 +115,6 @@ class App < Sinatra::Base
       end
       result
     end
-
   end
 
 
@@ -156,9 +122,16 @@ class App < Sinatra::Base
     redirect "/presentation/overview"
   end
 
-  get "/presentation/:file" do |file|
-    source = File.read(File.join(settings.root, "presentations/#{file}.md"))
-    haml :slidedown, :locals => { :source => source }
+  get "/presentation/overview" do
+    haml :overview, :locals => {source: source(:overview)}
   end
 
+  get "/presentation/frontend" do
+    haml :frontend, :locals => {source: source(:frontend)}
+  end
+
+  private
+  def source(file)
+    File.read(File.join(settings.root, "presentations/#{file}.md"))
+  end
 end
