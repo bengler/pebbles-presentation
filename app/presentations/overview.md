@@ -59,7 +59,7 @@ We must be able to share user profiles across applications, and provide a login 
 - Traveling cookies
 
 # Goals: Data sharing
-**Data arrive, get processed and is delivered in the locations most convenient and valuable to our users.**
+**Data are presented and manipulated in the locations most convenient and valuable to our users.**
 
 Storing the data in the app where it was created is like using an operating system without a file system.
 
@@ -249,6 +249,12 @@ They lack a sophisticated access control scheme. **On it!**
 Client side with CORS: Very easy.
 
 Getting the backend up and running: You'll need a little hand holding. **Will be a one-liner soon.**
+
+# What we are focusing on these days
+- Security and access control [(PSM)](https://github.com/bengler/checkpoint/wiki/Pebbles-Security-Model)
+- Completing Origami
+- Configuration and inspection apps (XRay)
+- Cleaning up ruby- and js-libraries
 
 # Getting into it?
 
