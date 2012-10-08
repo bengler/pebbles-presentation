@@ -101,28 +101,6 @@ The website is just another client.
 ```
 <button class="btn btn-info" onclick="services.checkpoint.login('twitter'); return false">Log in</a>
 
-# Checking identity
-```js
-services.checkpoint.get('/identities/me').then(function(user){
-  alert(user.profile.name);
-});
-```
-
-# Identity record
-```js
-{
-  "identity": { "id": 160408, "provisional": false, "realm": "apdm" },
-  "accounts": ["twitter"],
-  "profile": {
-    "description": "Gartner på Underskog og idémann hos Bengler",
-    "image_url": "http://a0.twimg.com/profile_images ...",
-    "name": "Simen Svale Skogsrud",
-    "nickname": "svale",
-    "profile_url": "http://twitter.com/svale",
-    "provider": "twitter"
-  }
-}
-```
 
 # Displaying profile
 ```js
@@ -212,13 +190,13 @@ Knows "everything" about our partnering local papers
 # Status
 
 # Production ready?
-Yes.
+**Yes.**
 
 We are running most of our pebbles in a production environment. Ops-wise they are our most "boring" applications.
 
 _They lack a sophisticated access control scheme. **On it!**_
 
-# Pick up and go? Yes and No
+# Pick up and go?
 
 Client side with CORS: Very easy.
 
