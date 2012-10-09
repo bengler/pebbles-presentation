@@ -45,11 +45,13 @@ You solve this by adding api-actions willy nilly …
 
 > <cite>Wikipedia</cite>
 
+# ![Neat soa topology](/pictures/overview/topology.jpg)
+
 # SOA is more than having lots of APIs
 
-Interoperability demands som well thought out conventions.
+**Interoperability demands some well thought out conventions.**
 
-# Our Goals with Pebbles
+# Pebbles Design Goals
 
 # Goals: Auth roaming
 **We must be able to share user profiles across applications, and provide a login that travels across hosts.**
@@ -60,14 +62,15 @@ Interoperability demands som well thought out conventions.
 Storing the data in the app where it was created is like using an operating system without a file system.
 
 # Goals: Deploy once, reuse everywhere
-**A lot of data has similar sematics across applications. Build once!**
+**A lot of data has similar sematics across applications.**
 
-Media uploads | Likes, kudos, votes | Objectionable content reports | Comments | Post-like records | User accounts, authentication, access-privileges | Organizational structure, roles
+**Have a single service to user everywhere.**
 
 # Goals: Piecemeal upgrades
 **Small, loosely coupled parts that can be refactored or upgraded individually where it makes most sense.**
 
-Technology evolves. You are going to want to move to newer and better things. For huge things, it will never make business sense until catastrophy is imminent.
+- Technology evolves. 
+- For huge wads of software, it will never make business sense to upgrade until catastrophy is imminent.
 
 # Approach
 
@@ -88,9 +91,10 @@ The API is the ONLY way anything is allowed to modify the data of the service. N
 The website is just another client.
 
 # Full API coverage
-*API-coverage*: The fraction of actions that an application performs on a set of data that is exposed through a public api.
-
 **The "API only"-approach guarantees an API coverage of 100%**
+
+API-coverage: The fraction of actions that an application performs on a set of data that is exposed through a public api.
+
 
 # Some examples
 
@@ -101,6 +105,16 @@ The website is just another client.
 ```
 <button class="btn btn-info" onclick="services.checkpoint.login('twitter'); return false">Log in</a>
 
+# Roaming identity
+
+```js
+> checkpoint.session
+=> "u6r38mt8rb7kx0myph950oj0krcv8n9xtq51yacolgsi4zmzogk76tuth6v4nyul4w2p9817betg9gog1x6tr4hgsqaq1gxyg4p"
+```
+</br>
+
+- All pebbles recognize this cookie.
+- For apps that support it, it will travel with you from host to host.
 
 # Displaying profile
 ```js
@@ -140,8 +154,7 @@ Document store
 # ∴ Kudu
 Likes, kudos, votes
 
-- Accepts votes by object identifier
-- Different kinds of votes, different scores
+- Keeps track of votes, downvotes, plays, views, likes etc.
 - Provide sorted lists and representative sets of objects
 
 # ∴ Snitch
