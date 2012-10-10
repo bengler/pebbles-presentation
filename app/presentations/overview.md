@@ -64,13 +64,13 @@ Storing the data in the app where it was created is like using an operating syst
 # Goals: Deploy once, reuse everywhere
 **A lot of data has similar sematics across applications.**
 
-**Have a single service to user everywhere.**
+Have a single service to use everywhere.
 
 # Goals: Piecemeal upgrades
 **Small, loosely coupled parts that can be refactored or upgraded individually where it makes most sense.**
 
-- Technology evolves. 
-- For huge wads of software, it will never make business sense to upgrade until catastrophy is imminent.
+- Technology evolves
+- For huge apps it will never make business sense to upgrade until catastrophy is imminent
 
 # Approach
 
@@ -95,36 +95,31 @@ The website is just another client.
 
 API-coverage: The fraction of actions that an application performs on a set of data that is exposed through a public api.
 
+# How to be a Pebble
+- Be a http/json api
+- Respect the url-schema `/api/<service>/v<version>/...`
+- Respect Checkpoint and the session hash
+- Respect [uids](https://github.com/bengler/pebbles-uid)
+- Respect [CORS](https://github.com/bengler/pebbles-cors)
+- Optionally: [The Pebbles Security Model](https://github.com/bengler/checkpoint/wiki/Pebbles-Security-Model)
+- Apart from that: _Do what thou wilt shall be the whole of the standard._
 
-# Some examples
+# Tech and Ops
 
-# Logging in:
+# Ops wins
+- Scaling each service independently
+- Measure load and usage per service
+- Deploy new features weeks before they are used in apps
 
-```html
-<a href="#" onclick="services.checkpoint.login('twitter')">Log in</a>
-```
-<button class="btn btn-info" onclick="services.checkpoint.login('twitter'); return false">Log in</a>
+# The stack
 
-# Roaming identity
+- _Frontend:_ CoffeeScript, Backbone, Jade, Sass/Compass
+- _Web server:_ Ruby, Sinatra, <strike>Rails</strike>
+- _Data tier:_ Postgres, Memcached, RabbitMQ, ElasticSearch
+- _Cloud:_ S3, SQS, EC2
 
-```js
-> checkpoint.session
-=> "u6r38mt8rb7kx0myph950oj0krcv8n9xtq51yacolgsi4zmzogk76tuth6v4nyul4w2p9817betg9gog1x6tr4hgsqaq1gxyg4p"
-```
-</br>
+But any language that can talk _http_ and _amqp_ can be a part of the _pebblesphere_.
 
-- All pebbles recognize this cookie.
-- For apps that support it, it will travel with you from host to host.
-
-# Displaying profile
-```js
-services.checkpoint.get("/identities/me").then(function(user) {
-	$('#profile').html("<img src='"+user.profile.image_url+"'/> "+user.profile.name)
-});
-```
-<p></p>
-&lt;span id=&quot;profile&quot;&gt;<span id="profile"></span>&lt;/span&gt;
-<br/><button class="btn btn-info" onclick="__getProfile(); return(false);">Run</a>
 
 # The Pebbles So far
 
@@ -213,7 +208,7 @@ _They lack a sophisticated access control scheme. **On it!**_
 
 Client side with CORS: Very easy.
 
-Getting the backend up and running: You'll need a little hand holding. **Will be a one-liner soon.**
+Run the backends: You'll need a little hand holding for now.
 
 # What we are focusing on these days
 - Security and access control [(PSM)](https://github.com/bengler/checkpoint/wiki/Pebbles-Security-Model)
@@ -226,11 +221,10 @@ Liberal do-anything license!
 
 http://pebblestack.org
 
-http://github.com/bengler
 
 # Getting into it?
 
 - Start with the _readme_'s on github. 
 - Then invite yourselves over for lunch!
 
-# Over til Bjørge
+# That's it
